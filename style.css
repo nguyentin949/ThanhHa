@@ -1,0 +1,193 @@
+/* --- Cấu trúc cơ bản --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Tránh thanh cuộn xuất hiện khi có animation */
+}
+
+/* --- Thiết lập Background --- */
+body {
+    background-image: url('0803.jpg'); 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    /* Dùng flexbox để căn giữa */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Cần thiết để các hạt lấp lánh (position: absolute) bám theo body */
+    position: relative; 
+}
+
+/* Lớp phủ mờ màu hồng */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(255, 230, 238, 0.4);
+    z-index: 1; 
+}
+
+/* --- Căn giữa nội dung --- */
+.content-container {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+    text-align: center;
+    max-width: 90%;
+    
+    /* FIX: Phải có position thì z-index mới hoạt động, đè lên lớp mờ */
+    position: relative; 
+    z-index: 2; 
+    
+    /* Animation cho nội dung */
+    animation: floatContent 4s ease-in-out infinite;
+}
+
+/* --- Định dạng chữ --- */
+header h1 {
+    color: #FF6B6B;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+header p, .message-section p {
+    color: #D6336C;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.message-section {
+    margin: 20px 0 30px 0;
+}
+
+.button-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.button-link {
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* --- Thiết lập Nút nhấn --- */
+/* From Uiverse.io by barisdogansutcu */ 
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 18px 35px;
+  color: white;
+  text-shadow: 2px 2px rgb(116, 116, 116);
+  text-transform: uppercase;
+  cursor: pointer;
+  border: solid 3px black;
+  letter-spacing: 2px;
+  font-weight: 700;
+  font-size: 18px;
+  background-color: hsl(49deg 98% 60%);
+  border-radius: 50px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: scale(0.9);
+  transition: all 100ms ease;
+}
+
+button:hover {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  background-color: hsl(49deg 100% 55%);
+}
+
+button svg {
+  transition: all 0.5s ease;
+  z-index: 2;
+}
+
+.play {
+  transition: all 0.5s ease;
+  transition-delay: 300ms;
+}
+
+button:hover svg {
+  transform: scale(3) translate(50%);
+}
+
+.now {
+  position: absolute;
+  left: 0;
+  transform: translateX(-100%);
+  transition: all 0.5s ease;
+  z-index: 2;
+}
+
+button:hover .now {
+  transform: translateX(10px);
+  transition-delay: 300ms;
+}
+
+button:hover .play {
+  transform: translateX(200%);
+  transition-delay: 300ms;
+}
+
+
+/* --- Các Animation --- */
+
+/* 1. Animation nội dung trôi nổi */
+@keyframes floatContent {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 2. FIX: Thêm CSS cho các hạt lấp lánh (sparkles) */
+.sparkle {
+    position: absolute; /* Tách hạt lấp lánh ra khỏi luồng của flexbox để không xô lệch bố cục */
+    top: -10px; /* Bắt đầu rơi từ trên cùng màn hình */
+    background-color: #FF99CC; /* Màu hạt rơi */
+    border-radius: 50%;
+    z-index: 3; /* Nằm trên cùng */
+    opacity: 0.8;
+    box-shadow: 0 0 5px #FF99CC, 0 0 10px #FF99CC;
+    animation: fall linear infinite; /* Animation rơi */
+}
+
+/* Hiệu ứng rơi của hạt */
+@keyframes fall {
+    0% {
+        transform: translateY(-10vh) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(10vh) scale(1);
+    }
+    100% {
+        transform: translateY(110vh) scale(0);
+        opacity: 0;
+    }
+
+}
